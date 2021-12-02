@@ -53,8 +53,9 @@ void updateFramebufferProp( Framebuffer *framebuffer );   // Updates framebuffer
 #include <xf86drm.h>
 #include <xf86drmMode.h>
 #include <gbm.h>
-#include <sys/ioctl.h>
 #endif /* RPI4 */
+
+#include <sys/ioctl.h>
 
 // OpenglES
 #include <EGL/egl.h>

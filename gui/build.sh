@@ -17,7 +17,6 @@ fi
 
 GENERAL_COMPILER_FLAGS="-std=c11 -Iinclude -Ithirdparty -Isrc -Wall -Wextra -Werror -Wno-unused -Wno-unused-parameter -Wno-missing-braces -Wno-sign-compare"
 
-
 RASPI_FLAGS="-DRPI4 -I./ -I/usr/include -lEGL -lGLESv2 -L/usr/lib -lm -ldl -I/usr/include/EGL -I/usr/include/GLES2 -I/usr/include/libdrm -ldrm -lgbm"
 
 if [ "$1" = "$DEBUG_VAR"  ]; then

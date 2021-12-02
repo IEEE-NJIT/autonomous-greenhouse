@@ -199,9 +199,9 @@ void initializeEGL( unsigned winHeight, unsigned winWidth ) {
     };
 
     #ifdef RPI4
-    drmData.device = open( "/dev/dri/card0", O_RDWR | FD_CLOEXEC );
+    drmData.device = open( "/dev/dri/card0", O_RDWR | 0 );
     if( getDisplay( &eglWindow.display ) != 0 ) {
-	drmData.device = open( "/dev/dri/card1", O_RDWR | FD_CLOEXEC );
+	drmData.device = open( "/dev/dri/card1", O_RDWR | 0 );
 	if( getDisplay( &eglWindow.display ) != 0 ) {
 	    fprintf( stderr, "Unable to get EGL display.\n" );
 	    close( drmData.device );
@@ -257,25 +257,26 @@ void initializeEGL( unsigned winHeight, unsigned winWidth ) {
     }
 
     #else // Code for all other RPIs
-    if( (eglWindow.display = eglGetDisplay( EGL_DEFAULT_DISPLAY) == EGL_NO_DISPLAY ) {
+    if( (eglWindow.display = eglGetDisplay( EGL_DEFAULT_DISPLAY ) ) == EGL_NO_DISPLAY ) {
 	fprintf( stderr, "Failed to get EGL display. Error %s,\n", eglGetErrorStr() );
 	exit( EGL_ERROR_CODE );
     }
     
-    if( eglInitialize( eglWindow.display, &eglWindow.major, &eglWindow.minor ) +== EGL_FALSE ) {
+    if( eglInitialize( eglWindow.display, &eglWindow.major, &eglWindow.minor ) == EGL_FALSE ) {
 	fprintf( stderr, "Failed to get EGL version! Error: %s.\n", eglGetErrorStr() );
 	eglTerminate( eglWindow.display );
 	exit( EGL_ERROR_CODE );
     }
 
+    EGLint configCount;
     eglWindow.configs = calloc( 1, sizeof( EGLConfig ) );
-    if( !eglChooseConfig( eglWindow.display, configAttribs, &eglWindow.configs, 1, &eglWindow.numConfigs ) ) {
+    if( !eglChooseConfig( eglWindow.display, eglConfigAttribs, eglWindow.configs, 1, &configCount ) ) {
 	fprintf( stderr, "Failed to get EGL config! Error: %s.\n", eglGetErrorStr() );
  	eglTerminate( eglWindow.display );
 	exit( EGL_ERROR_CODE );
     }
 
-    eglWindow.surface = eglCreatePbufferSurface( eglWindow.dispalay, eglWindow.configs, pbufferAttribs );
+    eglWindow.surface = eglCreatePbufferSurface( eglWindow.display, eglWindow.configs, pbufferAttribs );
     if( eglWindow.surface == EGL_NO_SURFACE ) {
 	fprintf( stderr, "Failed to create EGL surface: Error: %s.\n", eglGetErrorStr() );
 	eglTerminate( eglWindow.display );
@@ -284,7 +285,7 @@ void initializeEGL( unsigned winHeight, unsigned winWidth ) {
 
     eglBindAPI( EGL_OPENGL_API );
 
-    eglWindow.context = eglCreateContext( eglWindow.display, eglWindow.configs, EGL_NO_CONTEXT, contextAttribs );
+    eglWindow.context = eglCreateContext( eglWindow.display, eglWindow.configs, EGL_NO_CONTEXT, eglContextAttribs );
     if( eglWindow.context == EGL_NO_CONTEXT ) {
 	fprintf( stderr, "Failed to create EGL context! Error: %s.\n", eglGetErrorStr() );
 	eglDestroySurface( eglWindow.display, eglWindow.surface );
