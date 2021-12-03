@@ -260,6 +260,8 @@ void initFont(const char *filePath) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, 512, 512, 0, GL_ALPHA, GL_UNSIGNED_BYTE, tempBitmap);
+    //GLint swizzleMask[] = { GL_ALPHA, GL_ZERO, GL_ZERO, GL_ZERO };
+    //glTexParameteriv( GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask );
     glBindTexture(GL_TEXTURE_2D, 0);
 
     //free( ttfBuffer );
