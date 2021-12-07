@@ -16,7 +16,7 @@
 #include "util.h"
 
 bool32_t running = 1;
-#define DISPLAY_FPS 0
+#define DISPLAY_FPS 1
 #define PLANT_DATA_FILE	"plant_data_example.txt"
 
 #include "ogl.c"

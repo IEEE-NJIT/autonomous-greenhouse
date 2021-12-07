@@ -174,7 +174,8 @@ void updateRender( Memory *memory, State *state, Input *input ) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glm_translate_make(viewMatrix, (vec3) {camPosX, -camPosY, -camPosZ});
-    glm_ortho(0.0f, state->width, 0.0f, state->height, 0.1f, 1000.0f, projMatrix);
+    //glm_ortho(0.0f, state->width, 0.0f, state->height, 0.1f, 1000.0f, projMatrix);
+    glm_ortho(0.0f, state->width, state->height, 0.0f, 0.1f, 1000.0f, projMatrix);
 
     glBindTexture( GL_TEXTURE_2D, textureId );
     //drawRectangle( textRect, viewMatrix, projMatrix );
@@ -229,8 +230,13 @@ void updateRender( Memory *memory, State *state, Input *input ) {
     drawText( fpsCounter, viewMatrix, projMatrix );
     #endif
 
+    //renderGLToFramebuffer( state->framebuffer );
+ 
+    #if RPI4
+    gbmSwapBuffers( &eglWindow.display, &eglWindow.surface );
+    #endif /* RPI4 */
+
     //oglSwapBuffers();
-    renderGLToFramebuffer( state->framebuffer );
 }
 
 void drawFPS( char fps[25] ) {
